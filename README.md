@@ -1,60 +1,79 @@
 # API Yatube
 
-REST API для социальной сети Yatube. Пользователи могут публиковать посты, комментировать их, подписываться на авторов. Реализована аутентификация по токену, разграничение прав доступа и сериализация данных.
+REST API для социальной сети **Yatube**.
+
+Пользователи могут:
+- публиковать посты;
+- просматривать и комментировать чужие посты;
+- подписываться на авторов (в рамках расширения проекта).
+
+Реализована:
+- аутентификация по токену (`TokenAuthentication`);
+- разграничение прав доступа;
+- вложенные ресурсы;
+- сериализация и валидация данных через Django REST Framework.
+
+---
 
 ## Технологии
 
 - Python 3.8+
 - Django 3.2
 - Django REST Framework
-- TokenAuthentication
 - SQLite (по умолчанию)
+- TokenAuthentication
 - Pytest
 
-## Начало работы
+---
 
-1. Клонируйте репозиторий:
+## Установка и запуск
 
-```bash
-git clone https://github.com/pyryanova/api_yatube.git
-cd api_yatube
-```
+1. Клонировать репозиторий:
 
-2. Создайте и активируйте виртуальное окружение:
+   ```bash
+   git clone https://github.com/pyryanova/api_yatube.git
+   cd api_yatube
+   ```
 
-```bash
-python -m venv venv
-source venv/bin/activate
-```
+2. Создать и активировать виртуальное окружение:
 
-3. Установите зависимости:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # для Windows: venv\Scripts\activate
+   ```
 
-```bash
-pip install -r requirements.txt
-```
+3. Установить зависимости:
 
-4. Выполните миграции:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```bash
-python yatube_api/manage.py migrate
-```
+4. Выполнить миграции:
 
-5. Запустите сервер разработки:
+   ```bash
+   python yatube_api/manage.py migrate
+   ```
 
-```bash
-python yatube_api/manage.py runserver
-```
+5. Запустить сервер разработки:
+
+   ```bash
+   python yatube_api/manage.py runserver
+   ```
+
+---
 
 ## Аутентификация
 
 Используется `TokenAuthentication`.
 
 - Получение токена:
+
   ```http
   POST /api/v1/api-token-auth/
   ```
 
-- Пример запроса:
+- Пример тела запроса:
+
   ```json
   {
     "username": "ваш_логин",
@@ -62,35 +81,45 @@ python yatube_api/manage.py runserver
   }
   ```
 
-- Токен передаётся в заголовке:
-  ```
+- Передача токена в заголовке:
+
+  ```http
   Authorization: Token <ваш_токен>
   ```
 
+> ⚠️ **Важно:** Все запросы к API доступны **только после авторизации**. Анонимные пользователи получают `401 Unauthorized`.
+
+---
+
 ## Тестирование
+
+Для запуска автотестов:
 
 ```bash
 pytest
 ```
 
+---
+
 ## Postman
 
-Для ручного тестирования можно использовать коллекцию запросов:
+Для ручной проверки API:
 
-```bash
-cd postman_collection
-bash set_up_data.sh
-```
+1. Перейдите в папку с коллекцией и выполните скрипт:
 
-Файл `CRUD_for_yatube.postman_collection.json` можно импортировать в Postman для тестирования API.
+   ```bash
+   cd postman_collection
+   bash set_up_data.sh
+   ```
 
-## Структура проекта
+   > ⚠️ Скрипт очистит текущую базу данных и создаст тестовые объекты.
 
-- `yatube_api/` — основной код Django-проекта и приложений
-- `api/` — реализация API: сериализаторы, вьюсеты, маршруты
-- `posts/` — модели и бизнес-логика
-- `tests/` — автоматические тесты
+2. Импортируйте файл `CRUD_for_yatube.postman_collection.json` в Postman.
+
+3. Используйте коллекцию для отправки последовательных запросов к API.
+
+---
 
 ## Лицензия
 
-Проект создан в учебных целях.
+Проект создан в учебных целях в рамках обучения на Яндекс.Практикуме.
