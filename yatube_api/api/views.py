@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from posts.models import Comment, Group, Post
+from posts.models import Group, Post
 
 from .mixins import PostFromURLMixin
 from .permissions import IsOwnerOrReadOnlyPermission
